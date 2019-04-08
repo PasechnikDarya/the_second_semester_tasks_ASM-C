@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <ctype.h>
 
-const int FILE_SIZE = 600;
+const int FILE_SIZE = 522;
 
 long int f_size (FILE *file);
 int file_check (FILE *file);
@@ -11,9 +11,9 @@ int file_fixing (FILE *file, FILE *n_file);
 
 int main ()
 {
-    FILE *file_in = fopen ("/home/fox/Документы/1_курс/2_семестр/прога/password/vzlom.com", "r+b");
+    FILE *file_in = fopen ("C:/Users/fox/CLionProjects/password/vzlom.com", "rb");
 
-    FILE *file_out = fopen ("/home/fox/Документы/1_курс/2_семестр/прога/password/vzlom_r.com", "wb");
+    FILE *file_out = fopen ("C:/Users/fox/CLionProjects/password/vzlom2.com", "wb");
 
     if (file_in == NULL || file_out == NULL)
     {
@@ -24,7 +24,7 @@ int main ()
 
     int check = file_check (file_in);
 
-    if (check == -1)    file_fixing (file_in, file_out);
+    if (check != -1)    file_fixing (file_in, file_out);
 
     fclose(file_in);
     fclose(file_out);
@@ -47,7 +47,7 @@ long int f_size (FILE *file)
 {
     assert (file);
 
-    fseek (file, 0, 199);
+    fseek (file, 0, SEEK_END);
 
     long int symbCount = 0;
 
@@ -66,14 +66,20 @@ int file_fixing (FILE *file, FILE *n_file)
 
     fread (buff, FILE_SIZE, sizeof(*buff), file);
 
-    if (buff[409] == 74)
+    if (buff[153] == 116)
     {
         printf ("the file has already been hacked\n");
 
         return 0;
     }
 
-    else        buff[409] = 74;
+    else
+    {
+        buff[153] = 116;
+
+        printf ("YES, we've done it\n");
+
+    }
 
     fwrite (buff, sizeof(char), FILE_SIZE, n_file);
 
